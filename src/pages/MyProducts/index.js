@@ -26,7 +26,6 @@ const MyProducts = () => {
 
     const fetchProducts = async () => {
         try {
-            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
             const token = sessionStorage.getItem("token");
             const apiBaseUrl = process.env.REACT_APP_ITEMURL;
             //const myItemUrl = `${apiBaseUrl}/myItem`;
@@ -34,8 +33,6 @@ const MyProducts = () => {
             const response = await fetch(myItemUrl, {
                 method: "GET",
                 headers: {
-                    // Include any necessary headers (e.g., authorization token)
-                    // Replace 'YOUR_ACCESS_TOKEN' with an actual token if needed
                     Authorization: `Bearer ` + token,
                 },
             });
@@ -165,10 +162,23 @@ const MyProducts = () => {
           const updateItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${selectedProductId}`;
     
           const formDataToSend = new FormData();
+
+          if (formData.title !== null) {
           formDataToSend.append('title', formData.title);
+          }
+
+          if (formData.description !== null) {
           formDataToSend.append('description', formData.description);
+          }
+
+          if (formData.price !== null) {
           formDataToSend.append('price', formData.price);
+          }
+
+          if (formData.image !== null) {
           formDataToSend.append('image', formData.image);
+          }
+
     
           const response = await fetch(updateItemUrl, {
             method: "PUT",
@@ -198,6 +208,30 @@ const MyProducts = () => {
         }
       };
 
+      const handleDeleteItem = async (productId) => {
+        try {
+          const token = sessionStorage.getItem("token");
+          const apiBaseUrl = process.env.REACT_APP_ITEMURL;
+          const deleteItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${productId}`;
+    
+          const response = await fetch(deleteItemUrl, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+    
+          if (!response.ok) {
+            console.error('Failed to delete item:', response.statusText);
+            return;
+          }
+    
+          fetchProducts();
+        } catch (error) {
+          console.error('Error deleting item:', error.message);
+        }
+      };
+
       return (
         <div>
           <h1>My Products</h1>
@@ -217,7 +251,7 @@ const MyProducts = () => {
                 {/* Add Update and Delete buttons */}
                 <Card.Footer>
                   <Button variant="info" onClick={() => handleShowModal(product._id)}>Update</Button>{" "}
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="danger" onClick={() => handleDeleteItem(product._id)}>Delete</Button>
                 </Card.Footer>
               </Card>
             ))}
