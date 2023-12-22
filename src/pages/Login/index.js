@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import nav from "../../components/Nav";
+import {GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
 
 import {useAuth} from "../../components/AuthContext";
 
@@ -17,6 +18,10 @@ const LoginPage = () => {
 
     // State to store user information
     const [userInfo, setUserInfo] = useState(null);
+
+
+
+
 
     // Function to handle login
     const handleLogin = async () => {
@@ -65,6 +70,10 @@ const LoginPage = () => {
         }
     };
 
+
+
+
+
     return (
         <div>
             {isLoggedIn ? (
@@ -91,6 +100,8 @@ const LoginPage = () => {
                     </label>
                     <br />
                     <button onClick={handleLogin}>Login</button>
+                    <Link to="https://user-microservice-402518.ue.r.appspot.com/users/google/login/">Sign Up with Google</Link>
+
                 </div>
             )}
         </div>

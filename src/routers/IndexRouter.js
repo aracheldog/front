@@ -11,6 +11,7 @@ import Nav from "../components/Nav";
 import SignUpPage from "../pages/SignUp";
 
 
+
 const IndexRouter = ()=>{
 
     return (
@@ -23,9 +24,9 @@ const IndexRouter = ()=>{
                 <Route path= "/product" element={<ProductPage/>}></Route>
                 <Route path="/product/:product_id" element={<ProductDetailPage/>} />
                 <Route path= "/profile" element={<ProfilePage/>}></Route>
-
                 <Route path= "/edit_profile" element={<EditProfilePage/>}></Route>
                 <Route path= "/myProducts" element={<MyProductsPage/>}></Route>
+
             </Routes>
         </Router>
     )
