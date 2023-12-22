@@ -13,6 +13,7 @@ const IndexRouter = ()=>{
                 <Route path= "/" element={<HomePage/>}></Route>
                 <Route path= "/login" element={<LoginPage/>}></Route>
                 <Route path= "/product" element={<ProductPage/>}></Route>
+                <Route path="/product/:product_id" element={<ProductPage/>} />
                 <Route path= "/profile" element={<ProfilePage/>}></Route>
             </Routes>
         </Router>
