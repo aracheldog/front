@@ -4,7 +4,6 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
-import { Link } from 'react-router-dom'; // Make sure to import Link here
 
 
 const ProductListPage = () => {

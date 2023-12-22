@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import ReviewPage from "../Review";
-import reviewApiService from "../Review/reviewAPI";
+import reviewApiService from "../Review/reviewAPI"
+import { Card, ListGroup } from 'react-bootstrap';
 
 const ProductDetailPage = () => {
     const { product_id } = useParams();
@@ -79,18 +80,38 @@ const ProductDetailPage = () => {
             <h1>Product Detail Page</h1>
             {productDetails ? (
                 <div>
-                    <p>Product ID: {productDetails._id}</p>
-                    {productDetails.imageData && (
-                        <img
-                            src={`data:image/png;base64,${productDetails.imageData}`}
-                            alt={productDetails.name} style={{ maxWidth: "100%" }}
-                            className="product-img"
-                        />
-                    )}
-                    <p>Title: {productDetails.title}</p>
-                    <p>Price: {productDetails.price}</p>
-                    <p>Seller ID: {productDetails.user_id}</p>
-                    <p>Description: {productDetails.description}</p>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Product Details</Card.Title>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item>
+                                    <strong>Product ID:</strong> {productDetails._id}
+                                </ListGroup.Item>
+                                {productDetails.imageData && (
+                                    <ListGroup.Item>
+                                        <img
+                                            src={`data:image/png;base64,${productDetails.imageData}`}
+                                            alt={productDetails.name}
+                                            style={{ maxWidth: '100%' }}
+                                            className="product-img"
+                                        />
+                                    </ListGroup.Item>
+                                )}
+                                <ListGroup.Item>
+                                    <strong>Title:</strong> {productDetails.title}
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <strong>Price:</strong> {productDetails.price}
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <strong>Seller ID:</strong> {productDetails.user_id}
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <strong>Description:</strong> {productDetails.description}
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </Card.Body>
+                    </Card>
 
 
                     <ReviewPage reviews={reviews.Reviews} fetchNewReviews={fetchReviews} hasNext={hasNext} productId = {productDetails._id} />
