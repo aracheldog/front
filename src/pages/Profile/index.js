@@ -21,6 +21,7 @@ const ProfilePage = () => {
                 if (response.ok) {
                     // Parse the JSON response
                     const userData = await response.json();
+                    console.log(userData)
                     // Set user profile data in state
                     setUserProfile(userData);
                 } else {
@@ -45,6 +46,11 @@ const ProfilePage = () => {
                     <p>ID: {userProfile.id}</p>
                     <p>Email: {userProfile.email}</p>
                     <p>Full Name: {userProfile.full_name}</p>
+                    <p>Address: {userProfile.address}</p>
+                    <p>City: {userProfile.city}</p>
+                    <p>State: {userProfile.state}</p>
+                    <p>Zipcode: {userProfile.zip_code}</p>
+                    <p>Description: {userProfile.description}</p>
                     {/* Add other profile fields as needed */}
                 </div>
             ) : (

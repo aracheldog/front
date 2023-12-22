@@ -8,6 +8,9 @@ const LoginPage = () => {
     // State to manage login status
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    // State to store user information
+    const [userInfo, setUserInfo] = useState(null);
+
     // Function to handle login
     const handleLogin = async () => {
         try {
@@ -21,6 +24,14 @@ const LoginPage = () => {
             });
 
             if (response.ok) {
+                const data = await response.json();
+
+                // Store token in sessionStorage
+                sessionStorage.setItem("token", data.token);
+
+                // Store user information in state
+                setUserInfo(data.user);
+
                 // Set the login status to true
                 setIsLoggedIn(true);
                 alert("Login successful!"); // You can replace this with actual handling
