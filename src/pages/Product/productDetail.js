@@ -69,7 +69,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const response = await fetch(`http://ec2-34-229-89-39.compute-1.amazonaws.com:5001/item/${id}/details/async`);
+        const response = await fetch(`http://ec2-34-228-11-246.compute-1.amazonaws.com:5001/item/${id}/details/async`);
         if (response.ok) {
           const data = await response.json();
           setDetails(data);
