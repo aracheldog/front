@@ -13,6 +13,7 @@ const MyProducts = () => {
     title: "",
     description: "",
     price: "",
+    image: null,
   });
 
     useEffect(() => {
@@ -60,6 +61,7 @@ const MyProducts = () => {
           title: "",
           description: "",
           price: "",
+          image:null,
         });
       };
     
@@ -70,22 +72,23 @@ const MyProducts = () => {
         });
       };
     
+      const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setFormData((prev) => ({
+          ...prev,
+          image: file,
+        }));
+      };
+
       const handleCreateItem = async () => {
         try {
           // Ensure that required fields are not empty before creating the item
-          if (!formData.title || !formData.description || !formData.price) {
+          if (!formData.title || !formData.description || !formData.price|| !formData.image) {
             // Handle validation error, show a message, or prevent the submission
             console.error('Please fill in all required fields');
             return;
           }
       
-          // Construct the request body
-          const requestBody = {
-            title: formData.title,
-            description: formData.description,
-            price: formData.price,
-            // Add other fields as needed
-          };
       
           // Fetch the API endpoint for creating a new item
           const token = sessionStorage.getItem("token");
@@ -93,13 +96,17 @@ const MyProducts = () => {
           //const createItemUrl = `${apiBaseUrl}/items`;
           const createItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items`;
       
+          const formDataToSend = new FormData();
+          formDataToSend.append('title', formData.title);
+          formDataToSend.append('description', formData.description);
+          formDataToSend.append('price', formData.price);
+          formDataToSend.append('image', formData.image);
           const response = await fetch(createItemUrl, {
             method: "POST",
             headers: {
-              "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(requestBody),
+            body: formDataToSend,
           });
       
           if (!response.ok) {
@@ -113,6 +120,7 @@ const MyProducts = () => {
             title: "",
             description: "",
             price: "",
+            image:null,
           });
       
           handleCloseModal();
@@ -189,6 +197,16 @@ const MyProducts = () => {
                     onChange={handleChange}
                     />
                 </Form.Group>
+
+                {/* Add file input for image */}
+                <Form.Group controlId="formImage">
+                <Form.Label>Image</Form.Label>
+                <Form.Control
+                    type="file"
+                    name="image"
+                    onChange={handleFileChange}
+                />
+                </Form.Group>
     
                 <Button variant="primary" onClick={handleCreateItem}>
                   Create Item
@@ -199,5 +217,7 @@ const MyProducts = () => {
         </div>
       );
     };
+
+    
     
     export default MyProducts;
