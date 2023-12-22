@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
 const MyProducts = () => {
+  const [isUpdating, setIsUpdating] = useState(false);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const MyProducts = () => {
     price: "",
     image: null,
   });
+
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
     useEffect(() => {
         // Fetch products when the component mounts
@@ -43,19 +46,41 @@ const MyProducts = () => {
 
             const data = await response.json();
             setProducts(data.items);
-            console.log(token)
-            console.log(data.items)
-            console.log(products);
         } catch (error) {
             console.error('Error fetching products:', error.message);
         }
     };
 
-    const handleShowModal = () => {
-        setShowModal(true);
-      };
+    const handleShowModal = (productId) => {
+        if (productId) {
+          // If productId is provided, set the form data for update mode
+          const selectedProduct = products.find((product) => product._id === productId);
+          setSelectedProductId(productId);
     
-      const handleCloseModal = () => {
+          if (selectedProduct) {
+            setFormData({
+              title: selectedProduct.title || "",
+              description: selectedProduct.description || "",
+              price: selectedProduct.price || "",
+              image: null, // You may want to fetch the existing image URL and display it if needed
+            });
+          }
+          setIsUpdating(true);
+        } else {
+          // If productId is not provided, reset the form data for create mode
+          setFormData({
+            title: "",
+            description: "",
+            price: "",
+            image: null,
+          });
+          setIsUpdating(false);
+        }
+    
+        setShowModal(true);
+    };
+    
+    const handleCloseModal = () => {
         setShowModal(false);
         setFormData({
           title: "",
@@ -63,7 +88,9 @@ const MyProducts = () => {
           price: "",
           image:null,
         });
-      };
+        setSelectedProductId(null);
+        setIsUpdating(false);
+    };
     
       const handleChange = (e) => {
         setFormData({
@@ -131,10 +158,50 @@ const MyProducts = () => {
         }
       };
     
+      const handleUpdateItem = async () => {
+        try {
+          const token = sessionStorage.getItem("token");
+          const apiBaseUrl = process.env.REACT_APP_ITEMURL;
+          const updateItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${selectedProductId}`;
+    
+          const formDataToSend = new FormData();
+          formDataToSend.append('title', formData.title);
+          formDataToSend.append('description', formData.description);
+          formDataToSend.append('price', formData.price);
+          formDataToSend.append('image', formData.image);
+    
+          const response = await fetch(updateItemUrl, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formDataToSend,
+          });
+    
+          if (!response.ok) {
+            console.error('Failed to update item:', response.statusText);
+            return;
+          }
+    
+          setFormData({
+            title: "",
+            description: "",
+            price: "",
+            image: null,
+          });
+    
+          handleCloseModal();
+          // Optionally, you can fetch and update the list of items to reflect the changes
+          // fetchProducts();
+        } catch (error) {
+          console.error('Error updating item:', error.message);
+        }
+      };
+
       return (
         <div>
           <h1>My Products</h1>
-          <Button variant="primary" onClick={handleShowModal}>
+          <Button variant="primary" onClick={() => handleShowModal(null)}>
             Add New Item
           </Button>
     
@@ -149,75 +216,72 @@ const MyProducts = () => {
                 </Card.Body>
                 {/* Add Update and Delete buttons */}
                 <Card.Footer>
-                  <Button variant="info">Update</Button>{" "}
+                  <Button variant="info" onClick={() => handleShowModal(product._id)}>Update</Button>{" "}
                   <Button variant="danger">Delete</Button>
                 </Card.Footer>
               </Card>
             ))}
           </ListGroup>
     
-          {/* Create Item Modal */}
-          <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Create New Item</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                {/* Include form fields for title, description, and price */}
-                <Form.Group controlId="formTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Enter title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
+          {/* Create or Update Item Modal */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedProductId ? "Update Item" : "Create New Item"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                <Form.Group controlId="formDescription">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="Enter description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Enter description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                <Form.Group controlId="formPrice">
-                    <Form.Label>Price</Form.Label>
-                    <Form.Control
-                    type="number"
-                    placeholder="Enter price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
+            <Form.Group controlId="formPrice">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter price"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                {/* Add file input for image */}
-                <Form.Group controlId="formImage">
-                <Form.Label>Image</Form.Label>
-                <Form.Control
-                    type="file"
-                    name="image"
-                    onChange={handleFileChange}
-                />
-                </Form.Group>
-    
-                <Button variant="primary" onClick={handleCreateItem}>
-                  Create Item
-                </Button>
-              </Form>
-            </Modal.Body>
-          </Modal>
-        </div>
-      );
-    };
+            {/* Add file input for image */}
+            <Form.Group controlId="formImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="file"
+                name="image"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
 
-    
-    
-    export default MyProducts;
+            <Button variant="primary" onClick={isUpdating ? handleUpdateItem : handleCreateItem}>
+              {isUpdating ? "Update Item" : "Create Item"}
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
+};
+
+export default MyProducts;
