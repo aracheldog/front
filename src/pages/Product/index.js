@@ -108,6 +108,7 @@ const ProductListPage = () => {
                 <div className="row">
                     {(isSearchActive ? filteredProducts : productList).map(product => (
                       <div key={product._id} className="col-md-4 mb-4">
+                      <Link to={`/product/${product._id}`}>
                           <Card>
                               {product.imageData && (
                                   <Card.Img
@@ -125,6 +126,7 @@ const ProductListPage = () => {
                                   <ListGroup.Item>Seller ID: {product.user_id}</ListGroup.Item>
                               </ListGroup>
                           </Card>
+                          </Link>
                       </div>
                     ))}
                 </div>
@@ -139,5 +141,4 @@ const ProductListPage = () => {
         </div>
     );
 };
-
 export default ProductListPage;
