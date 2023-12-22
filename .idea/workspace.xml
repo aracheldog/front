@@ -6,11 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="0e71c0e3-818c-4441-8267-5824bb8efc0c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/IndexRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/IndexRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/MyProducts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MyProducts/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Product/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Product/productDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Product/productDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Review/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Review/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Review/reviewAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Review/reviewAPI.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -14,6 +14,7 @@ const ProductListPage = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchActive, setIsSearchActive] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
     const product_service_base_url = 'http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000'
 
@@ -87,10 +88,40 @@ const ProductListPage = () => {
             setCurrentPage(currentPage - 1);
             setLoading(true);
         }
+        setDisabled(false)
     };
 
-    const handleNextClick = () => {
+    const checkNextPate = async (page) => {
+        try {
+
+            const response = await fetch(`${product_service_base_url}/items/${page}`);
+
+            if (response.ok) {
+                const data = await response.json();
+                setProductList(data.items);
+                return data
+            } else {
+                console.error(`Failed to fetch product list. Status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("Error fetching product list:", error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleNextClick = async () => {
         setCurrentPage(currentPage + 1);
+        const data = await checkNextPate(currentPage + 2)
+        console.log(data)
+        if( data && data.items.length >0){
+            setDisabled(false)
+
+        }
+        else{
+
+            setDisabled(true)
+        }
         setLoading(true);
     };
 
@@ -144,7 +175,7 @@ const ProductListPage = () => {
                     <Pagination>
                         <Pagination.Prev onClick={handlePreviousClick} disabled={currentPage === 1} />
                         <Pagination.Item active>{currentPage}</Pagination.Item>
-                        <Pagination.Next onClick={handleNextClick} disabled={currentPage === totalPages} />
+                        <Pagination.Next onClick={handleNextClick} disabled={disabled} />
                     </Pagination>
                 </div>
             )}

@@ -36,7 +36,7 @@ const MyProducts = () => {
                     Authorization: `Bearer ` + token,
                 },
             });
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
@@ -53,7 +53,7 @@ const MyProducts = () => {
           // If productId is provided, set the form data for update mode
           const selectedProduct = products.find((product) => product._id === productId);
           setSelectedProductId(productId);
-    
+
           if (selectedProduct) {
             setFormData({
               title: selectedProduct.title || "",
@@ -73,10 +73,10 @@ const MyProducts = () => {
           });
           setIsUpdating(false);
         }
-    
+
         setShowModal(true);
     };
-    
+
     const handleCloseModal = () => {
         setShowModal(false);
         setFormData({
@@ -88,14 +88,14 @@ const MyProducts = () => {
         setSelectedProductId(null);
         setIsUpdating(false);
     };
-    
+
       const handleChange = (e) => {
         setFormData({
           ...formData,
           [e.target.name]: e.target.value,
         });
       };
-    
+
       const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFormData((prev) => ({
@@ -112,14 +112,14 @@ const MyProducts = () => {
             console.error('Please fill in all required fields');
             return;
           }
-      
-      
+
+
           // Fetch the API endpoint for creating a new item
           const token = sessionStorage.getItem("token");
           const apiBaseUrl = process.env.REACT_APP_ITEMURL;
           //const createItemUrl = `${apiBaseUrl}/items`;
           const createItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items`;
-      
+
           const formDataToSend = new FormData();
           formDataToSend.append('title', formData.title);
           formDataToSend.append('description', formData.description);
@@ -132,13 +132,14 @@ const MyProducts = () => {
             },
             body: formDataToSend,
           });
-      
+
           if (!response.ok) {
             // Handle error, show a message, or log the error
             console.error('Failed to create item:', response.statusText);
+
             return;
           }
-      
+
           // Reset the form data and close the modal after successfully creating the item
           setFormData({
             title: "",
@@ -146,7 +147,8 @@ const MyProducts = () => {
             price: "",
             image:null,
           });
-      
+          await fetchProducts();
+
           handleCloseModal();
           // Optionally, you can fetch and update the list of items to reflect the newly created item
           // fetchProducts();
@@ -154,13 +156,13 @@ const MyProducts = () => {
           console.error('Error creating item:', error.message);
         }
       };
-    
+
       const handleUpdateItem = async () => {
         try {
           const token = sessionStorage.getItem("token");
           const apiBaseUrl = process.env.REACT_APP_ITEMURL;
           const updateItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${selectedProductId}`;
-    
+
           const formDataToSend = new FormData();
 
           if (formData.title !== null) {
@@ -179,7 +181,7 @@ const MyProducts = () => {
           formDataToSend.append('image', formData.image);
           }
 
-    
+
           const response = await fetch(updateItemUrl, {
             method: "PUT",
             headers: {
@@ -187,19 +189,20 @@ const MyProducts = () => {
             },
             body: formDataToSend,
           });
-    
+
           if (!response.ok) {
             console.error('Failed to update item:', response.statusText);
             return;
           }
-    
+
+          await fetchProducts();
           setFormData({
             title: "",
             description: "",
             price: "",
             image: null,
           });
-    
+
           handleCloseModal();
           // Optionally, you can fetch and update the list of items to reflect the changes
           // fetchProducts();
@@ -213,19 +216,19 @@ const MyProducts = () => {
           const token = sessionStorage.getItem("token");
           const apiBaseUrl = process.env.REACT_APP_ITEMURL;
           const deleteItemUrl = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${productId}`;
-    
+
           const response = await fetch(deleteItemUrl, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-    
+
           if (!response.ok) {
             console.error('Failed to delete item:', response.statusText);
             return;
           }
-    
+
           fetchProducts();
         } catch (error) {
           console.error('Error deleting item:', error.message);
@@ -238,7 +241,7 @@ const MyProducts = () => {
           <Button variant="primary" onClick={() => handleShowModal(null)}>
             Add New Item
           </Button>
-    
+
           {/* List of Products */}
           <ListGroup>
             {products.map((product) => (
@@ -256,7 +259,7 @@ const MyProducts = () => {
               </Card>
             ))}
           </ListGroup>
-    
+
           {/* Create or Update Item Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

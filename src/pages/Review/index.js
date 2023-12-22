@@ -39,14 +39,18 @@ const ReviewPage = ({ reviews, fetchNewReviews,hasNext, productId }) => {
 
     const handlePreviousClick = async () => {
         if (currentPage > 1) {
+            const data = await fetchNewReviews(currentPage - 1, true);
+            setNewReviews(data.Reviews)
             setCurrentPage(currentPage - 1);
-            await fetchNewReviews(currentPage - 1);
+
             setLoading(true);
         }
     };
 
     const handleNextClick = async () => {
-        await fetchNewReviews(currentPage + 1);
+        const data = await fetchNewReviews(currentPage + 1, false);
+        // console.log(data)
+        setNewReviews(data.Reviews)
         setCurrentPage(currentPage + 1);
     };
 
@@ -84,7 +88,7 @@ const ReviewPage = ({ reviews, fetchNewReviews,hasNext, productId }) => {
         <div>
             <h2>Reviews</h2>
 
-            {newReviews.length > 0 ? (
+            {newReviews && newReviews.length > 0 ? (
                 <div>
                     <ul className="list-group">
                         {newReviews.map((review) => (

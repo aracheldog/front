@@ -1,11 +1,11 @@
 
 
-const review_service_api_url = "http://ec2-54-235-9-93.compute-1.amazonaws.com:8011";
+const review_service_api_url = "http://ec2-3-95-23-212.compute-1.amazonaws.com:8011";
 
 const reviewApiService = {
     fetchProductReviews: async (productId, page) => {
         try {
-            console.log(`${review_service_api_url}/${productId}/reviews/${page}`)
+
             const response = await fetch(`${review_service_api_url}/${productId}/reviews/${page}`);
 
             if (response.ok) {
