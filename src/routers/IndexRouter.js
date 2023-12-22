@@ -4,6 +4,7 @@ import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
 import ProductPage from "../pages/Product";
 import ProfilePage from "../pages/Profile";
+import MyProductsPage from "../pages/MyProducts";
 
 
 const IndexRouter = ()=>{
@@ -15,6 +16,7 @@ const IndexRouter = ()=>{
                 <Route path= "/product" element={<ProductPage/>}></Route>
                 <Route path="/product/:product_id" element={<ProductPage/>} />
                 <Route path= "/profile" element={<ProfilePage/>}></Route>
+                <Route path= "/myProducts" element={<MyProductsPage/>}></Route>
             </Routes>
         </Router>
     )
