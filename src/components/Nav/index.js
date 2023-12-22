@@ -35,9 +35,18 @@ const Navigation = () => {
                                 </Button>
                             </>
                         ): (
-                            < Link to="/login">
-                                <Button variant="outline-success">Login</Button>
-                            </Link>
+                            <>
+                                <Link to="/login">
+                                    <Button variant="outline-success">Login</Button>
+                                </Link>
+                                <Link to="/signup">
+                                    <Button variant="outline-primary" className="ms-2">
+                                        Sign Up
+                                    </Button>
+                                </Link>
+                            </>
+
+
                         )}
                     </div>
 

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {Button} from "react-bootstrap";
+import {useAuth} from "../../components/AuthContext";
+import Modal from "react-bootstrap/Modal";
+import {findAllByRole} from "@testing-library/react";
 
 const ProfilePage = () => {
     // State to store user profile data
@@ -44,6 +48,47 @@ const ProfilePage = () => {
         fetchUserProfile();
     }, []); // The empty dependency array ensures that the effect runs only once, similar to componentDidMount
 
+    const { logout, userName } = useAuth();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const handleShowDeleteModal = () => {
+        setShowDeleteModal(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+
+    const navigate = useNavigate();
+    const handleDeleteAccount = async () => {
+        try {
+            // Perform the delete request to delete the user account
+            // Include the bearer token from the session in the request headers
+            const response = await fetch('https://user-microservice-402518.ue.r.appspot.com/users/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.ok) {
+                alert('User deleted successfully!')
+
+                // Perform any additional actions after successful deletion, such as logging out
+                logout();
+                navigate("/");
+            } else {
+                alert(`Failed to delete user. Status: ${response.status}`);
+            }
+        } catch (error) {
+            alert('Error deleting user:', error.message);
+        } finally {
+            setShowDeleteModal(false);
+        }
+    };
+
+
     return (
         <div>
             {userProfile ? (
@@ -59,8 +104,27 @@ const ProfilePage = () => {
                     <p>Description: {userProfile.description}</p>
                     {/* Add other profile fields as needed */}
                     <Link to="/edit_profile">
-                        <button>Edit Profile</button>
+                        <Button variant="primary">Edit Profile</Button>
                     </Link>
+                    <Button variant="danger" onClick={handleShowDeleteModal}>
+                        Delete Account
+                    </Button>
+                    <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Delete Account</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Are you sure you want to delete your account?</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                                Cancel
+                            </Button>
+                            <Button variant="danger" onClick={handleDeleteAccount}>
+                                Delete Account
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             ) : (
                 <p>Loading user profile...</p>

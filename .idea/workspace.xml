@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e71c0e3-818c-4441-8267-5824bb8efc0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/AuthContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Profile/editProfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Review/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Review/reviewAPI.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/SignUp/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Nav/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Nav/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Product/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Product/productDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Product/productDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Profile/editProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Profile/editProfile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Profile/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Profile/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routers/IndexRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/IndexRouter.js" afterDir="false" />
     </list>
@@ -102,7 +95,7 @@
       <workItem from="1701053567603" duration="378000" />
       <workItem from="1701054323930" duration="21611000" />
       <workItem from="1701186961499" duration="258000" />
-      <workItem from="1703215989178" duration="27462000" />
+      <workItem from="1703215989178" duration="29850000" />
     </task>
     <servers />
   </component>

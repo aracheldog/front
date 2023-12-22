@@ -8,7 +8,7 @@ import MyProductsPage from "../pages/MyProducts";
 import ProductDetailPage from "../pages/Product/productDetail";
 import EditProfilePage from "../pages/Profile/editProfile";
 import Nav from "../components/Nav";
-
+import SignUpPage from "../pages/SignUp";
 
 
 const IndexRouter = ()=>{
@@ -19,9 +19,11 @@ const IndexRouter = ()=>{
             <Routes>
                 <Route path= "/" element={<HomePage/>}></Route>
                 <Route path= "/login" element={<LoginPage/>}></Route>
+                <Route path= "/signup" element={<SignUpPage/>}></Route>
                 <Route path= "/product" element={<ProductPage/>}></Route>
                 <Route path="/product/:product_id" element={<ProductDetailPage/>} />
                 <Route path= "/profile" element={<ProfilePage/>}></Route>
+
                 <Route path= "/edit_profile" element={<EditProfilePage/>}></Route>
                 <Route path= "/myProducts" element={<MyProductsPage/>}></Route>
             </Routes>
