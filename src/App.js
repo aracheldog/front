@@ -5,14 +5,19 @@ import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+
+
 function App() {
+
   return (
-      <div>
-          <Nav></Nav>
-          <Container>
-              <IndexRouter></IndexRouter>
-          </Container>
-      </div>
+
+          <div>
+              <Container>
+                  <IndexRouter></IndexRouter>
+              </Container>
+
+          </div>
+
 
   );
 }

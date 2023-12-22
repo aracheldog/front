@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import nav from "../../components/Nav";
+
+import {useAuth} from "../../components/AuthContext";
 
 const LoginPage = () => {
+    const { login } = useAuth();
+
     // State to manage user input
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -29,6 +36,13 @@ const LoginPage = () => {
                 // Store token in sessionStorage
                 sessionStorage.setItem("token", data.token);
                 sessionStorage.setItem("id", data.user_info.id);
+                sessionStorage.setItem("user_name", data.user_info.full_name);
+                sessionStorage.setItem("email", data.user_info.email);
+                sessionStorage.setItem("address", data.user_info.address);
+                sessionStorage.setItem("city", data.user_info.city);
+                sessionStorage.setItem("state", data.user_info.state);
+                sessionStorage.setItem("zip_code", data.user_info.zip_code);
+                sessionStorage.setItem("description", data.user_info.description);
                 sessionStorage.setItem("user", data.user_info)
 
                 // Store user information in state
@@ -36,7 +50,11 @@ const LoginPage = () => {
 
                 // Set the login status to true
                 setIsLoggedIn(true);
+                login(data.user_info);
+                navigate("/");
+
                 alert("Login successful!"); // You can replace this with actual handling
+
             } else {
                 // Handle login failure (e.g., show an error message)
                 alert("Login failed. Please check your credentials.");

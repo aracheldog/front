@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {Link} from "react-router-dom";
 
 const ProfilePage = () => {
     // State to store user profile data
@@ -57,6 +58,9 @@ const ProfilePage = () => {
                     <p>Zipcode: {userProfile.zip_code}</p>
                     <p>Description: {userProfile.description}</p>
                     {/* Add other profile fields as needed */}
+                    <Link to="/edit_profile">
+                        <button>Edit Profile</button>
+                    </Link>
                 </div>
             ) : (
                 <p>Loading user profile...</p>

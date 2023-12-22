@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Pagination from "react-bootstrap/Pagination";
@@ -9,11 +10,14 @@ const ProductListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
+    const product_service_base_url = 'http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000'
+    const review_service_api_url = "http://ec2-3-89-56-48.compute-1.amazonaws.com:8011";
+
     useEffect(() => {
         // Fetch total pages when the component mounts
         const fetchTotalPages = async () => {
             try {
-                const response = await fetch("http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/page");
+                const response = await fetch(`${product_service_base_url}/items/page`);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -32,8 +36,7 @@ const ProductListPage = () => {
     useEffect(() => {
         const fetchProductList = async () => {
             try {
-                const response = await fetch(`http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${currentPage}`);
-
+                const response = await fetch(`${product_service_base_url}/items/${currentPage}`);
                 if (response.ok) {
                     const data = await response.json();
                     setProductList(data.items);
@@ -74,6 +77,7 @@ const ProductListPage = () => {
                 <div className="row">
                     {productList.map(product => (
                         <div key={product._id} className="col-md-4 mb-4">
+
                             <Card>
                                 {product.imageData && (
                                     <Card.Img
@@ -90,6 +94,7 @@ const ProductListPage = () => {
                                     <ListGroup.Item>Description: {product.description}</ListGroup.Item>
                                     <ListGroup.Item>Price: {product.price}</ListGroup.Item>
                                     <ListGroup.Item>Seller ID: {product.user_id}</ListGroup.Item>
+                                    <a href= {`/product/${product._id}`} className="btn btn-primary stretched-link">Product Detail</a>
                                     {/* Include other product details as needed */}
                                 </ListGroup>
                             </Card>
