@@ -1,6 +1,6 @@
 
 
-const review_service_api_url = "http://ec2-3-89-56-48.compute-1.amazonaws.com:8011";
+const review_service_api_url = "http://ec2-54-235-9-93.compute-1.amazonaws.com:8011";
 
 const reviewApiService = {
     fetchProductReviews: async (productId, page) => {
@@ -76,9 +76,28 @@ const reviewApiService = {
         }
     },
 
+    deleteProductReview: async (reviewId) => {
+        try {
+            const authToken = sessionStorage.getItem('token');
+
+            const response = await fetch(`${review_service_api_url}/reviews/${reviewId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${authToken}`,
+                },
+            });
+
+            if (response.ok) {
+                console.log(`Review with ID ${reviewId} deleted successfully.`);
+            } else {
+                console.error(`Failed to delete review. Status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("Error deleting review:", error.message);
+        }
+    },
 
 
-    // Add other API-related functions as needed
 };
 
 export default reviewApiService;

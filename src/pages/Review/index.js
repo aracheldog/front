@@ -3,11 +3,12 @@ import Pagination from "react-bootstrap/Pagination";
 import reviewApiService from "../Review/reviewAPI";
 import { Form, Button } from "react-bootstrap";
 
-const ReviewPage = ({ reviews, fetchNewReviews,hasNext,productId }) => {
+const ReviewPage = ({ reviews, fetchNewReviews,hasNext, productId }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [reviewText, setReviewText] = useState("");
     const userId = sessionStorage.getItem('id')
+    const [newReviews, setNewReviews] = useState(reviews);
 
 
     const [editedReviewId, setEditedReviewId] = useState(null);
@@ -23,12 +24,16 @@ const ReviewPage = ({ reviews, fetchNewReviews,hasNext,productId }) => {
         setEditedReviewText("");
     };
 
-    const handleSaveEdit = () => {
+    const handleSaveEdit = async () => {
         if (editedReviewId !== null && editedReviewText.trim() !== "") {
-            reviewApiService.editProductReview(editedReviewId, editedReviewText);
+            await reviewApiService.editProductReview(editedReviewId, editedReviewText);
+            const data = await reviewApiService.fetchProductReviews(productId, currentPage)
+            setNewReviews(data.Reviews)
             setEditedReviewId(null);
             setEditedReviewText("");
+            alert("Comment Updated Successfully!")
         }
+
     };
 
 
@@ -55,22 +60,34 @@ const ReviewPage = ({ reviews, fetchNewReviews,hasNext,productId }) => {
 
             if (data) {
                 // Handle success, maybe fetch the updated reviews for the product
-                console.log("Review submitted successfully");
+                const data = await reviewApiService.fetchProductReviews(productId, currentPage)
+                setNewReviews(data.Reviews)
                 setReviewText(""); // Clear the review text after submission
+                alert("Review submitted successfully")
             }
         } catch (error) {
             console.error("Error submitting review:", error.message);
         }
     };
 
+    const handleDeleteButtonClick = async (reviewId) => {
+        // Call the delete API endpoint here
+        await reviewApiService.deleteProductReview(reviewId);
+        const data = await reviewApiService.fetchProductReviews(productId, currentPage);
+        setNewReviews(data.Reviews);
+        alert("Comment Deleted Successfully!");
+    };
+
+
+
     return (
         <div>
             <h2>Reviews</h2>
 
-            {reviews.length > 0 ? (
+            {newReviews.length > 0 ? (
                 <div>
                     <ul className="list-group">
-                        {reviews.map((review) => (
+                        {newReviews.map((review) => (
                             <li key={review._id} className="list-group-item">
                                 <div className="row">
                                     <div className="col-md-3">
@@ -97,12 +114,22 @@ const ReviewPage = ({ reviews, fetchNewReviews,hasNext,productId }) => {
                                             <div>
                                                 <p>{review.description}</p>
                                                 {userId === review.user_id && (
-                                                    <Button
-                                                        variant="primary"
-                                                        onClick={() => handleEditButtonClick(review._id, review.description)}
-                                                    >
-                                                        Edit
-                                                    </Button>
+                                                    <>
+                                                        <Button
+                                                            variant="primary"
+                                                            onClick={() =>
+                                                                handleEditButtonClick(review._id, review.description)
+                                                            }
+                                                        >
+                                                            Edit
+                                                        </Button>{" "}
+                                                        <Button
+                                                            variant="danger"
+                                                            onClick={() => handleDeleteButtonClick(review._id)}
+                                                        >
+                                                            Delete
+                                                        </Button>
+                                                    </>
                                                 )}
                                             </div>
                                         )}
