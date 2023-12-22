@@ -28,6 +28,8 @@ const LoginPage = () => {
 
                 // Store token in sessionStorage
                 sessionStorage.setItem("token", data.token);
+                sessionStorage.setItem("id", data.user_info.id);
+                sessionStorage.setItem("user", data.user_info)
 
                 // Store user information in state
                 setUserInfo(data.user);
