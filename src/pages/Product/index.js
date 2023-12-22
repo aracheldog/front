@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
 
 const ProductListPage = () => {
     const [productList, setProductList] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSearchActive, setIsSearchActive] = useState(false);
 
     useEffect(() => {
         // Fetch total pages when the component mounts
@@ -27,12 +31,13 @@ const ProductListPage = () => {
         };
 
         fetchTotalPages();
-    }, []); // Trigger the effect only once when the component mounts
+    }, []);
 
     useEffect(() => {
         const fetchProductList = async () => {
             try {
-                const response = await fetch(`http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${currentPage}`);
+                const url = `http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/${currentPage}`;
+                const response = await fetch(url);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -47,9 +52,30 @@ const ProductListPage = () => {
             }
         };
 
-        // Fetch product list when the component mounts
         fetchProductList();
-    }, [currentPage]); // Trigger the effect only once when the component mounts
+    }, [currentPage]);
+
+    useEffect(() => {
+        if (isSearchActive) {
+            const lowercasedSearchTerm = searchTerm.toLowerCase();
+            const filtered = productList.filter(product =>
+                product.title.toLowerCase().includes(lowercasedSearchTerm) ||
+                product.description.toLowerCase().includes(lowercasedSearchTerm) ||
+                product.price.toString().toLowerCase().includes(lowercasedSearchTerm) ||
+                product.user_id.toLowerCase().includes(lowercasedSearchTerm)
+            );
+            setFilteredProducts(filtered);
+        }
+    }, [searchTerm, productList, isSearchActive]);
+
+    const handleSearch = () => {
+        setIsSearchActive(true);
+    };
+
+    const handleUndoSearch = () => {
+        setSearchTerm('');
+        setIsSearchActive(false);
+    };
 
     const handlePreviousClick = () => {
         if (currentPage > 1) {
@@ -63,46 +89,51 @@ const ProductListPage = () => {
         setLoading(true);
     };
 
-
-
     return (
         <div>
             <h1>Product List</h1>
+            <div>
+                <input
+                    type="text"
+                    placeholder="Search products"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Button onClick={handleSearch}>Search</Button>
+                <Button onClick={handleUndoSearch} variant="secondary">Undo Search</Button>
+            </div>
             {loading ? (
                 <p>Loading product list...</p>
             ) : (
                 <div className="row">
-                    {productList.map(product => (
-                        <div key={product._id} className="col-md-4 mb-4">
-                            <Card>
-                                {product.imageData && (
-                                    <Card.Img
-                                        variant="top"
-                                        src={`data:image/png;base64,${product.imageData}`}
-                                        alt={product.description}
-                                    />
-                                )}
-                                <Card.Body>
-                                    <Card.Title>{product.title}</Card.Title>
-                                    {/* Include other product details as needed */}
-                                </Card.Body>
-                                <ListGroup className="list-group-flush">
-                                    <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-                                    <ListGroup.Item>Price: {product.price}</ListGroup.Item>
-                                    <ListGroup.Item>Seller ID: {product.user_id}</ListGroup.Item>
-                                    {/* Include other product details as needed */}
-                                </ListGroup>
-                            </Card>
-                        </div>
+                    {(isSearchActive ? filteredProducts : productList).map(product => (
+                      <div key={product._id} className="col-md-4 mb-4">
+                          <Card>
+                              {product.imageData && (
+                                  <Card.Img
+                                      variant="top"
+                                      src={`data:image/png;base64,${product.imageData}`}
+                                      alt={product.description}
+                                  />
+                              )}
+                              <Card.Body>
+                                  <Card.Title>{product.title}</Card.Title>
+                              </Card.Body>
+                              <ListGroup className="list-group-flush">
+                                  <ListGroup.Item>Description: {product.description}</ListGroup.Item>
+                                  <ListGroup.Item>Price: {product.price}</ListGroup.Item>
+                                  <ListGroup.Item>Seller ID: {product.user_id}</ListGroup.Item>
+                              </ListGroup>
+                          </Card>
+                      </div>
                     ))}
                 </div>
             )}
-
             <div className="d-flex justify-content-center">
                 <Pagination>
                     <Pagination.Prev onClick={handlePreviousClick} disabled={currentPage === 1} />
                     <Pagination.Item active>{currentPage}</Pagination.Item>
-                    <Pagination.Next onClick={handleNextClick} disabled={currentPage == totalPages} />
+                    <Pagination.Next onClick={handleNextClick} disabled={currentPage === totalPages} />
                 </Pagination>
             </div>
         </div>
