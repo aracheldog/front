@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e71c0e3-818c-4441-8267-5824bb8efc0c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/Product/productDetail.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Product/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/IndexRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/IndexRouter.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -89,11 +91,22 @@
       <workItem from="1701053567603" duration="378000" />
       <workItem from="1701054323930" duration="21611000" />
       <workItem from="1701186961499" duration="258000" />
-      <workItem from="1703215989178" duration="3081000" />
+      <workItem from="1703215989178" duration="7029000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
