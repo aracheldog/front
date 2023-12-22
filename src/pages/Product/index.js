@@ -138,13 +138,16 @@ const ProductListPage = () => {
                     ))}
                 </div>
             )}
-            <div className="d-flex justify-content-center">
-                <Pagination>
-                    <Pagination.Prev onClick={handlePreviousClick} disabled={currentPage === 1} />
-                    <Pagination.Item active>{currentPage}</Pagination.Item>
-                    <Pagination.Next onClick={handleNextClick} disabled={currentPage === totalPages} />
-                </Pagination>
-            </div>
+            {}
+            {!isSearchActive && (
+                <div className="d-flex justify-content-center">
+                    <Pagination>
+                        <Pagination.Prev onClick={handlePreviousClick} disabled={currentPage === 1} />
+                        <Pagination.Item active>{currentPage}</Pagination.Item>
+                        <Pagination.Next onClick={handleNextClick} disabled={currentPage === totalPages} />
+                    </Pagination>
+                </div>
+            )}
         </div>
     );
 };

@@ -20,10 +20,7 @@ const Navigation = () => {
                         <Link to="/" className="nav-link">Home</Link>
                         <Link to="/product" className="nav-link">Products</Link>
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control type="search" placeholder="Search" className="me-2" aria-label="Search" />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
+
                     <span style={{ marginRight: '10px' }}></span>
 
                     <div className="ms-2">
