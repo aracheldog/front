@@ -7,6 +7,27 @@ const ProductListPage = () => {
     const [productList, setProductList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    useEffect(() => {
+        // Fetch total pages when the component mounts
+        const fetchTotalPages = async () => {
+            try {
+                const response = await fetch("http://ec2-3-136-159-88.us-east-2.compute.amazonaws.com:5000/items/page");
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setTotalPages(data.totalPages);
+                } else {
+                    console.error(`Failed to fetch total pages. Status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error("Error fetching total pages:", error.message);
+            }
+        };
+
+        fetchTotalPages();
+    }, []); // Trigger the effect only once when the component mounts
 
     useEffect(() => {
         const fetchProductList = async () => {
@@ -42,7 +63,7 @@ const ProductListPage = () => {
         setLoading(true);
     };
 
-    const totalPages = 2;
+
 
     return (
         <div>
