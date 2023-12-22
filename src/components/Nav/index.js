@@ -33,6 +33,9 @@ const Navigation = () => {
                                 <Button variant="outline-danger" onClick={logout}>
                                     Logout
                                 </Button>
+                                <Link to="/myProducts">
+                                    <Button variant="outline-success">My Products</Button>
+                                </Link>
                             </>
                         ): (
                             <>
